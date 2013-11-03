@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html class="full" lang="en"><!-- The full page image background will only work if the html has the custom class set to it! Don't delete it! -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>A simple url shortener.</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.css" rel="stylesheet">
+
+  <!-- Custom CSS for the 'Full' Template -->
+  <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-fixed-bottom navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container -->
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-sm-12">
+        <h1>Paste your link below.</h1>
+        <p>Here's a spot for some awesome intro text. Check out the fixed nav at the bottom!</p>
+        <form role="form">
+          <div class="form-group">
+            <input type="text" class="form-control" id="url" placeholder="Enter URL">
+          </div>
+          <button type="button" onClick="shorten()" class="btn btn-default">Shorten!</button>
+        </form>
+
+        <div class="clearfix">&nbsp;</div><!-- this one lines add some space! horray bootstrap -->
+        <div>
+          <textarea id="output" class="form-control" rows="1" placeholder="Your links will show up here."></textarea>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- javascript -->
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.js"></script>
+  
+  <!-- Pages core JavaScript COMES AFTER JQUERY!
+  ================================================== -->
+  <script type="text/javascript">
+  ;
+
+/*  function shortenRequest() {
+    var request = $.ajax( "index.php" )
+    .done(function() {
+      alert( "success" );
+    })
+    .fail(function() {
+      alert( "error" );
+    })
+    .always(function() {
+      alert( "complete" );
+    });
+  }
+*/
+  function handleResponse(json) {
+    var response = JSON.parse(json);
+    if (response.hasError == true) {
+      $('#output').text(response.errorDesc);
+    } else {
+      //alert("here3-2!");
+      $('#output').text(response.shortlink);
+      $('#output').select();
+    } 
+    $("#output").fadeOut(50).fadeIn(50);
+  }
+
+  function shorten() {
+    // GRAB URL FROM USER INPUT
+    var url = $('#url').val();
+    //var url = btoa(url); // BASE 64 ENCODING
+    $.post('shorten.php', {"url": url})
+    .done(function(json) {
+      handleResponse(json);
+    });      
+  }
+
+
+
+  
+
+
+
+
+</script>
+
+
+</body>
+
+</html>
